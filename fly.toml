@@ -1,0 +1,27 @@
+# fly.toml app configuration file generated for arcade-10086 on 2024-10-11T03:22:06Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'arcade-10086'
+primary_region = 'nrt'
+
+[build]
+  [build.args]
+    GO_VERSION = '1.21.0'
+
+[env]
+  PORT = '8080'
+
+[http_service]
+  internal_port = 10086
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
