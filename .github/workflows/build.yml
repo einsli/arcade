@@ -1,4 +1,4 @@
-name: Build Go Project
+name: Build and Deploy Go Project
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21.0'  # 指定 Go 的特定版本
+          go-version: '1.21.0'  # 指定 Go 的版本
 
       # Step 3: Cache Go modules (optional)
       - name: Cache Go modules
@@ -37,3 +37,23 @@ jobs:
       # Step 4: Build the project using go build
       - name: Build project
         run: go build -o arcade cmd/engine/main.go
+
+      # Step 5: Upload Build Artifacts (optional)
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-build-output
+          path: arcade
+
+      # Step 6: Set up SSH key
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 7: Upload binary to remote server via SSH
+      - name: Upload arcade to remote server
+        run: |
+          scp arcade root@47.109.138.133:/opt/arcade/bin
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
