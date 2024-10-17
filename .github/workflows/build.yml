@@ -1,0 +1,39 @@
+name: Build Go Project
+
+on:
+  push:
+    branches:
+      - develop  # 监听 `develop` 分支上的 push 事件
+  pull_request:
+    branches:
+      - develop  # 监听 PR 合并到 `develop` 分支的事件
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Go environment
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.0'  # 指定 Go 的特定版本
+
+      # Step 3: Cache Go modules (optional)
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Step 4: Build the project using go build
+      - name: Build project
+        run: go build -o arcade cmd/engine/main.go
