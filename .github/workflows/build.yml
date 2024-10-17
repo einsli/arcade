@@ -54,6 +54,7 @@ jobs:
       # Step 7: Upload binary to remote server via SSH
       - name: Upload arcade to remote server
         run: |
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
           scp arcade root@47.109.138.133:/opt/arcade/bin
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
