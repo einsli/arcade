@@ -59,8 +59,6 @@ jobs:
         run: |
           echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
 
-          echo "ip is $SERVER_IP"
-          
           # stop server
           ssh root@$SERVER_IP "pkill -f arcade" || true
 
@@ -68,10 +66,10 @@ jobs:
           rsync -av conf.d root@$SERVER_IP:/opt/arcade/
           
           # update binary 
-          rsync -av arcade root@SERVER_IP:/opt/arcade/bin
+          rsync -av arcade root@SERVER_IP:/opt/arcade/bin/
 
           # start server
-          ssh root@$SERVER_IP "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
+          # ssh root@$SERVER_IP "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
