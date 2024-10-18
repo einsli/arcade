@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       # Step 2: Set up Go environment
-      - name: Set up Go 1.x
+      - name: Set up Go Version
         uses: actions/setup-go@v4
         with:
           go-version: '1.21.0'  # 指定 Go 的特定版本
@@ -55,17 +55,18 @@ jobs:
       - name: Upload arcade to remote server
         run: |
           echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
+          
           # stop server
           ssh root@47.109.138.133 "pkill -f arcade"
 
-          # update config
-          rsync -av conf.d root@47.109.138.133:/opt/arcade/
+          # # update config
+          # rsync -av conf.d root@47.109.138.133:/opt/arcade/
           
-          # update binary 
-          rsync -av arcade root@47.109.138.133:/opt/arcade/bin
+          # # update binary 
+          # rsync -av arcade root@47.109.138.133:/opt/arcade/bin
 
-          # start server
-          ssh root@47.109.138.133 "cd /opt/arcade/ && ./bin/arcade -conf ./conf.d"
+          # # start server
+          # ssh root@47.109.138.133 "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
