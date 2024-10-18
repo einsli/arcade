@@ -63,7 +63,7 @@ jobs:
           # ssh root@{{ env.SERVER_IP }} "pkill -f arcade || true"
 
           # # update config
-          rsync -av conf.d root@{{ env.SERVER_IP }}:/opt/arcade/
+          rsync -av conf.d root@47.109.138.133:/opt/arcade/
           
           # # update binary 
           # rsync -av arcade root@{{ env.SERVER_IP }}:/opt/arcade/bin
