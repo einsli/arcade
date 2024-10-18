@@ -62,14 +62,14 @@ jobs:
           # stop server
           ssh root@{{ env.SERVER_IP }} "pkill -f arcade || true"
 
-          # update config
-          rsync -av conf.d root@{{ env.SERVER_IP }}:/opt/arcade/
+          # # update config
+          # rsync -av conf.d root@{{ env.SERVER_IP }}:/opt/arcade/
           
-          # update binary 
-          rsync -av arcade root@{{ env.SERVER_IP }}:/opt/arcade/bin
+          # # update binary 
+          # rsync -av arcade root@{{ env.SERVER_IP }}:/opt/arcade/bin
 
-          # start server
-          ssh root@{{ env.SERVER_IP }} "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
+          # # start server
+          # ssh root@{{ env.SERVER_IP }} "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
