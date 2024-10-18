@@ -60,7 +60,7 @@ jobs:
           echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
           
           # stop server
-          ssh root@$SERVER_IP "pkill -f arcade || true"
+          ssh root@$SERVER_IP "pkill -f arcade" || true
 
           # update config
           rsync -av conf.d root@$SERVER_IP:/opt/arcade/
