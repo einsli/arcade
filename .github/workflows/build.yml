@@ -12,6 +12,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      SERVER_IP: 47.109.138.133
+
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
@@ -57,7 +60,16 @@ jobs:
           echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
           
           # stop server
-          ssh root@47.109.138.133 "ls"
+          ssh root@{{ env.SERVER_IP }} "pkill -f arcade || true"
+
+          # update config
+          rsync -av conf.d root@{{ env.SERVER_IP }}:/opt/arcade/
+          
+          # update binary 
+          rsync -av arcade root@{{ env.SERVER_IP }}:/opt/arcade/bin
+
+          # start server
+          ssh root@{{ env.SERVER_IP }} "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
