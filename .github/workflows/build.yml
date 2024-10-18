@@ -8,12 +8,12 @@ on:
     branches:
       - develop  # 监听 PR 合并到 `develop` 分支的事件
 
+env:
+  SERVER_IP: 47.109.138.133
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      SERVER_IP: 47.109.138.133
     
     steps:
       # Step 1: Checkout the code
@@ -60,16 +60,16 @@ jobs:
           echo "StrictHostKeyChecking no" >> ~/.ssh/config  # 禁用主机密钥检查
           
           # stop server
-          # ssh root@{{ env.SERVER_IP }} "pkill -f arcade || true"
+          ssh root@$SERVER_IP "pkill -f arcade || true"
 
-          # # update config
-          rsync -av conf.d root@47.109.138.133:/opt/arcade/
+          # update config
+          rsync -av conf.d root@$SERVER_IP:/opt/arcade/
           
-          # # update binary 
-          # rsync -av arcade root@{{ env.SERVER_IP }}:/opt/arcade/bin
+          # update binary 
+          rsync -av arcade root@SERVER_IP:/opt/arcade/bin
 
-          # # start server
-          # ssh root@{{ env.SERVER_IP }} "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
+          # start server
+          ssh root@$SERVER_IP "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
