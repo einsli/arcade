@@ -69,7 +69,7 @@ jobs:
           rsync -av arcade root@$SERVER_IP:/opt/arcade/bin/
 
           # start server
-          # ssh root@$SERVER_IP "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d/config.toml > arcade.log 2>&1 &"
+          ssh root@$SERVER_IP "cd /opt/arcade/ && nohup ./bin/arcade -conf ./conf.d/config.toml > arcade.log 2>&1 &"
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
